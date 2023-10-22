@@ -13,6 +13,8 @@ class Facility(models.Model):
         ('park', 'Taman'),
         ('restaurant', 'Restoran'),
         ('shop', 'Toko'),
+        ('house', 'Perumahan'),
+
     ]
     STATUS_CHOICES = [
         ('proposed', 'Proposed'),
@@ -35,7 +37,7 @@ class Facility(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='proposed')
     open = models.BooleanField(default=False)
     location = models.PointField(srid=4326, spatial_index=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)  
+    price = models.DecimalField(max_digits=15, decimal_places=2)
     price_unit = models.CharField(max_length=20, choices=PRICE_CHOICES)
     photo = models.ImageField(upload_to='facility')
     operator = models.ForeignKey(User, on_delete=models.CASCADE)
