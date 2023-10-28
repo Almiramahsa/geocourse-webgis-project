@@ -27,5 +27,11 @@ head %}
     attribution:
       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(peta);
+
+  fetch("{% url 'custom_api' %}")
+    .then((response) => response.json())
+    .then(function (json) {
+      L.geoJSON(json).addTo(peta);
+    });
 </script>
 {% endblock %}
