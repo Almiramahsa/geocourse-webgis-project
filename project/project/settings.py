@@ -20,7 +20,6 @@ env = environ.Env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -36,6 +35,10 @@ ALLOWED_HOSTS = env('HOSTS').split(',')
 # Application definition
 
 INSTALLED_APPS = [
+    # Custom Apps
+    'bikini_bottom',
+
+    # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,16 +47,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
 
-
     # Leaflet
     'leaflet',
 
     # Crispy Form
     "crispy_forms",
     "crispy_bootstrap5",
-
-    # Custom Apps
-    'bikini_bottom',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +66,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'project.urls'
+LOGIN_REDIRECT_URL = '/'
 
 TEMPLATES = [
     {
@@ -92,7 +92,8 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        # 'ENGINE': 'django.db.backends.postgresql', # Engine database postgres non spasial
+        'ENGINE': 'django.contrib.gis.db.backends.postgis', # Engine database postgres spasial
         'HOST': env('DB_HOST'),
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
@@ -100,7 +101,6 @@ DATABASES = {
         'PORT': env('DB_PORT')
     }
 }
-
 
 
 # Password validation
@@ -138,9 +138,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT ='assets/static'
+STATIC_ROOT = 'assets/static'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = 'assets/media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -153,9 +154,7 @@ if os.name == 'nt':
         VENV_BASE, 'Lib\\site-packages\\osgeo') + ';' + os.environ['PATH']
     os.environ['PROJ_LIB'] = os.path.join(
         VENV_BASE, 'Lib\\site-packages\\osgeo\\data\\proj') + ';' + os.environ['PATH']
-
-
-
+    
 # LEAFLET SETTINGS
 LEAFLET_CONFIG = {
     'DEFAULT_CENTER': [11.608274122747922, 165.37697796900906],
